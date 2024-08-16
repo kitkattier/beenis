@@ -8,4 +8,4 @@ Beenis is a robot that compiles physical colours to brain f word
 - [@kitkat](https://github.com/kitkattier)
 - [@InsomniacCrow](https://github.com/InsomniacCrow)
 
-![Hero](https://i.imgur.com/BGGFYRG.png)
+![Hero](https://i.imgur.com/5YufhT1.png)
