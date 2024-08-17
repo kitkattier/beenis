@@ -1,8 +1,27 @@
 #include <stdio.h>
 
 #define MEMORY_SIZE 200
+#define NUM_PRINTABLE_CHARACTERS 38
+#define OUTPUT_WINDOW 9
 
 typedef signed char byte;
+
+char bscii_to_char(byte bscii) {
+    bscii %= NUM_PRINTABLE_CHARACTERS;
+    if (bscii < 0) {
+        bscii += NUM_PRINTABLE_CHARACTERS;
+    }
+    if (bscii <= 9) {
+        return bscii + '0';
+    }
+    if (bscii == 10) {
+        return ':';
+    }
+    if (bscii == 11) {
+        return ' ';
+    }
+    return bscii - 12 + 'a';
+}
 
 int main() {
     byte memory[MEMORY_SIZE] = {0};
@@ -21,9 +40,9 @@ int main() {
         } else if (c == '-') {
             memory[data_pointer]--;
         } else if (c == '>') {
-            data_pointer++;
+            data_pointer = (data_pointer + 1) % MEMORY_SIZE;
         } else if (c == '<') {
-            data_pointer--;
+            data_pointer = (data_pointer - 1) % MEMORY_SIZE;
         } else if (c == '[') {
             if (memory[data_pointer] == 0) {
                 int opens = 1;
@@ -49,11 +68,15 @@ int main() {
                 } while (closes > 0);
             }
         } else if (c == '.') {
-            printf("%c", memory[data_pointer]);
+            printf("%c", bscii_to_char(memory[data_pointer]));
         } else if (c == ',') {
             printf("NOT IMPLEMENTED"); // Didn't implement because STDIN reached EOF
         }
         inst_pointer++;
+    }
+
+    for (int i = 0; i < OUTPUT_WINDOW; i++) {
+        putchar(bscii_to_char(memory[i]));
     }
 
     return 0;
