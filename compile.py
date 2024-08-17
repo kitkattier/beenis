@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
+from sys import stdin
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -33,7 +34,7 @@ CODE_TEXT_COLOUR = "#454c5a"
 
 
 # TODO: this doesn't work properly if there's any invalid characters
-code = input()
+code = [c for c in stdin.read() if c in MAPPINGS]
 paper_height = (((len(code) * 2 + 1) * BLOCK_HEIGHT) // A4_HEIGHT) + 2
 
 page_font = ImageFont.load_default(size=40 * SCALING)
