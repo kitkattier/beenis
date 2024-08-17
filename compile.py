@@ -16,26 +16,28 @@ MAPPINGS = {
     "]": MAGENTA
 }
 
-PAPER_WIDTH = 500
-BLOCK_WIDTH = 400
-BLOCK_START = (PAPER_WIDTH - BLOCK_WIDTH) // 2 # x
-BLOCK_END = PAPER_WIDTH - BLOCK_START # x
-BLOCK_HEIGHT = 50
+SCALING = 2
+
+A4_WIDTH = 595 * 2
+A4_HEIGHT = 842 * 2
+
+BLOCK_WIDTH = 400 * SCALING
+BLOCK_START = (A4_WIDTH - BLOCK_WIDTH) // 2 # x
+BLOCK_END = A4_WIDTH - BLOCK_START # x
+BLOCK_HEIGHT = 50 * SCALING
 BLOCKS_PER_PAGE = 8
 
 PAGE_TEXT_COLOUR = "#454c5a"
 CODE_TEXT_COLOUR = "#454c5a"
 
-A4_WIDTH = 595
-A4_HEIGHT = 842
 
 
 # TODO: this doesn't work properly if there's any invalid characters
 code = input()
 paper_height = (((len(code) * 2 + 1) * BLOCK_HEIGHT) // A4_HEIGHT) + 2
 
-page_font = ImageFont.load_default(size=40)
-code_font = ImageFont.load_default(size=60)
+page_font = ImageFont.load_default(size=40 * SCALING)
+code_font = ImageFont.load_default(size=60 * SCALING)
 
 i = 0
 image_array = []
@@ -45,7 +47,7 @@ for page in range(paper_height):
     image = Image.new("RGB", (A4_WIDTH, A4_HEIGHT), "white")
     draw = ImageDraw.Draw(image)
 
-    draw.text((5, 0), str(page), font=page_font, fill=PAGE_TEXT_COLOUR)
+    draw.text((5 * SCALING, 0), str(page), font=page_font, fill=PAGE_TEXT_COLOUR)
     
     for _ in range(BLOCKS_PER_PAGE):
         if i >= len(code):
@@ -56,7 +58,7 @@ for page in range(paper_height):
             y_start = BLOCK_HEIGHT * (2 * (i % BLOCKS_PER_PAGE) + 1)
             draw.rectangle((BLOCK_START, y_start, BLOCK_END, y_start + BLOCK_HEIGHT), MAPPINGS[c])
 
-            draw.text((BLOCK_END + 15, y_start - 15), c, font=code_font, fill=CODE_TEXT_COLOUR)
+            draw.text((BLOCK_END + (15 * SCALING), y_start - (15 * SCALING)), c, font=code_font, fill=CODE_TEXT_COLOUR)
 
         i += 1
 
