@@ -1,3 +1,6 @@
+// This is just the sample script from the docs
+// It goes foward and backwards every 2 seconds
+
 int directionPin = 12;
 int pwmPin = 3;
 int brakePin = 9;
@@ -23,12 +26,12 @@ void loop() {
     directionState = !directionState;
 
     //write a low state to the direction pin (13)
-    if(directionState == false){
+    if(directionState == false) {
       digitalWrite(directionPin, LOW);
     }
 
     //write a high state to the direction pin (13)
-    else{
+    else {
       digitalWrite(directionPin, HIGH);
     }
 
