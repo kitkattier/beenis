@@ -6,12 +6,30 @@
 #define OUT 2
 #define OE 7
 #define LED 8
+#define NUM_CLRS 6
+
+
+typedef enum {
+  RED , BLUE, 
+} Colour;
+
+int nums_colors = 0;
+
 int g_count = 0; // count the frequecy
 int g_array[3]; // store the RGB value
 int g_flag = 0; // filter of RGB queue
 float g_SF[3]; // save the RGB Scale factor
 
 // Init TSC230 and setting Frequency.
+
+void calibrate() {
+  //for (int i=0; i < NUM_CLRS; i++)
+
+  // make motor go forward and stop
+  
+
+}
+
 void TSC_Init()
 {
     pinMode(S0, OUTPUT);
@@ -25,14 +43,18 @@ void TSC_Init()
 
 char check_color(float penis[])
 {
-  if (penis[0] > 170 && penis[1] < 140 && penis[2] < 140) {
+  if (penis[0] > 190 && penis[1] < 150 && penis[2] < 150) {
     return 'R'; // RED
-  } else if (penis[0] < 140 && penis[1] < 140 && penis[2] > 140) {
+  } else if (penis[0] < 140 && penis[1] < 150 && penis[2] > 160) {
     return 'B'; // BLUE 
-  } else if (penis[0] < 150 && penis[1] > 150 && penis[2] < 150) {
+  } else if (penis[0] < 170 && penis[1] > 170 && penis[2] < 150) {
     return 'G'; // GREEN
-  } else if (penis[0] > 200 && penis[1] < 200 && penis[2] < 150){
+  } else if (penis[0] > 230 && penis[1] > 210 && penis[2] < 160){
     return 'Y';
+  } else if (penis[0] > 180 && penis[1] < 140 && penis[2] < 160) {
+    return 'M';
+  } else if (penis[0] < 160 && penis[1] < 190 && penis[2] > 180) { 
+    return 'C';
   } else {
     return 'L';
   }
@@ -59,28 +81,28 @@ void TSC_Count()
 void TSC_Callback()
 {
     switch (g_flag) {
-        Serial.println(g_flag);
+        //Serial.println(g_flag);
     case 0:
-        Serial.println("->WB Start");
+        //Serial.println("->WB Start");
         TSC_WB(LOW, LOW); // Filter without Red
         break;
     case 1:
-        Serial.print("->Frequency R=");
+        //Serial.print("->Frequency R=");
 
-        Serial.println(g_count);
+        //Serial.println(g_count);
         g_array[0] = g_count;
         TSC_WB(HIGH, HIGH); // Filter without Green
         break;
     case 2:
-        Serial.print("->Frequency G=");
-        Serial.println(g_count);
+        //Serial.print("->Frequency G=");
+        //Serial.println(g_count);
         g_array[1] = g_count;
         TSC_WB(LOW, HIGH); // Filter without Blue
         break;
     case 3:
-        Serial.print("->Frequency B=");
-        Serial.println(g_count);
-        Serial.println("->WB End");
+        //Serial.print("->Frequency B=");
+        //Serial.println(g_count);
+        //Serial.println("->WB End");
         g_array[2] = g_count;
         TSC_WB(HIGH, LOW); // Clear(no filter)
         break;
@@ -95,7 +117,7 @@ void TSC_WB(int Level0, int Level1) // White Balance
     g_count = 0;
     g_flag++;
     TSC_FilterColor(Level0, Level1);
-    Timer1.setPeriod(500000); // set 1s period
+    Timer1.setPeriod(50000); // set 1s period
 }
 
 void setup()
@@ -116,9 +138,9 @@ void setup()
     g_SF[0] = 255.0 / g_array[0]; // R Scale factor
     g_SF[1] = 255.0 / g_array[1]; // G Scale factor
     g_SF[2] = 255.0 / g_array[2]; // B Scale factor
-    //Serial.println(g_SF[0]);
-    //Serial.println(g_SF[1]);
-    //Serial.println(g_SF[2]);
+    Serial.println(g_SF[0]);
+    Serial.println(g_SF[1]);
+    Serial.println(g_SF[2]);
 
 }
 
@@ -127,7 +149,7 @@ void loop()
     g_flag = 0;
     float drake[3];
     for (int i = 0; i < 3; i++) {
-        //Serial.println(int(g_array[i] * g_SF[i]));
+        Serial.println(int(g_array[i] * g_SF[i]));
         drake[i] = int(g_array[i] * g_SF[i]);
     }
     Serial.println(check_color(drake));

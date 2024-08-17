@@ -6,28 +6,30 @@ int directionPinB = 13;
 int pwmPinB = 11;
 int brakePinB = 8;
 
+float SPEED = 1;
+
 void move_forward() {
     // Motor A
     digitalWrite(directionPinA, HIGH);
     digitalWrite(brakePinA, LOW);
-    digitalWrite(pwmPinA, 100);
+    digitalWrite(pwmPinA, SPEED);
 
     // Motor B
     digitalWrite(directionPinB, HIGH);
     digitalWrite(brakePinB, LOW);
-    digitalWrite(pwmPinB, 100);
+    digitalWrite(pwmPinB, SPEED);
 }
 
 void move_backward() {
     // Motor A
     digitalWrite(directionPinA, LOW);
     digitalWrite(brakePinA, LOW);
-    digitalWrite(pwmPinA, 100);
+    digitalWrite(pwmPinA, SPEED);
 
     // Motor B
     digitalWrite(directionPinB, LOW);
     digitalWrite(brakePinB, LOW);
-    digitalWrite(pwmPinB, 100);
+    digitalWrite(pwmPinB, SPEED);
 }
 
 void brake() {
