@@ -1,6 +1,6 @@
 # 🐝Beenis 🤖
 
-Beenis is a robot that compiles physical colours to brain f word
+Beenis is a robot that compiles physical colours to [brain f word](https://en.wikipedia.org/wiki/Brainfuck)
 
 ## Authors
 
@@ -20,4 +20,4 @@ Beenis is a robot that compiles physical colours to brain f word
 
 ## AI Usage
 
-We used Jonathan to give us something pillow code :3.
+[Jonathan Yun](https://github.com/Spurkus/JonathanYunDiscordBot) helped with pillow code :3.
