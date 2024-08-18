@@ -55,7 +55,7 @@ bool execute_instruction(Color color) {
     case RED:
       memory[data_pointer]++;
       break;
-    case YELLOW;
+    case YELLOW:
       memory[data_pointer]--;
       break;
     case CYAN:
