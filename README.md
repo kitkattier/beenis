@@ -24,4 +24,4 @@ Beenis is a robot that compiles physical colours to [brain f word](https://en.wi
 
 ## TODO
 
--   BSCII instead of ASCII: 0 to 9 are 0 to 9, : is 10, a to z is 11 to 36
+-   remove gaps from different colours to save space

@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from sys import stdin
+from math import ceil
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -7,6 +8,11 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+NOP = ""
+EOF = "END"
 
 MAPPINGS = {
     "+": RED,
@@ -14,7 +20,9 @@ MAPPINGS = {
     "<": BLUE,
     ">": CYAN,
     "[": GREEN,
-    "]": MAGENTA
+    "]": MAGENTA,
+    NOP: WHITE,
+    EOF: BLACK
 }
 
 SCALING = 2
@@ -22,20 +30,28 @@ SCALING = 2
 A4_WIDTH = 595 * 2
 A4_HEIGHT = 842 * 2
 
+TOP_BOT_MARGIN = 20 * SCALING
+
 BLOCK_WIDTH = 400 * SCALING
 BLOCK_START = (A4_WIDTH - BLOCK_WIDTH) // 2 # x
 BLOCK_END = A4_WIDTH - BLOCK_START # x
-BLOCK_HEIGHT = 50 * SCALING
-BLOCKS_PER_PAGE = 8
+BLOCK_HEIGHT = 200 * SCALING
+BLOCKS_PER_PAGE = (A4_HEIGHT - 2 * TOP_BOT_MARGIN) // BLOCK_HEIGHT
 
 PAGE_TEXT_COLOUR = "#454c5a"
 CODE_TEXT_COLOUR = "#454c5a"
 
-
-
-# TODO: this doesn't work properly if there's any invalid characters
 code = [c for c in stdin.read() if c in MAPPINGS]
-paper_height = (((len(code) * 2 + 1) * BLOCK_HEIGHT) // A4_HEIGHT) + 2
+
+new_code = [code[0]]
+for c1, c2 in zip(code, code[1:]):
+    if c1 == c2:
+        new_code.append(NOP)
+    new_code.append(c2)
+code = new_code
+code.append(EOF)
+
+pages = ceil(len(code) / BLOCKS_PER_PAGE)
 
 page_font = ImageFont.load_default(size=40 * SCALING)
 code_font = ImageFont.load_default(size=60 * SCALING)
@@ -43,7 +59,7 @@ code_font = ImageFont.load_default(size=60 * SCALING)
 i = 0
 image_array = []
 
-for page in range(paper_height):
+for page in range(pages):
     # Create a new image
     image = Image.new("RGB", (A4_WIDTH, A4_HEIGHT), "white")
     draw = ImageDraw.Draw(image)
@@ -55,11 +71,10 @@ for page in range(paper_height):
             break
 
         c = code[i]
-        if c in MAPPINGS:
-            y_start = BLOCK_HEIGHT * (2 * (i % BLOCKS_PER_PAGE) + 1)
-            draw.rectangle((BLOCK_START, y_start, BLOCK_END, y_start + BLOCK_HEIGHT), MAPPINGS[c])
+        y_start = BLOCK_HEIGHT * (i % BLOCKS_PER_PAGE) + TOP_BOT_MARGIN
+        draw.rectangle((BLOCK_START, y_start, BLOCK_END, y_start + BLOCK_HEIGHT), MAPPINGS[c])
 
-            draw.text((BLOCK_END + (15 * SCALING), y_start - (15 * SCALING)), c, font=code_font, fill=CODE_TEXT_COLOUR)
+        draw.text((BLOCK_END + (15 * SCALING), y_start - (15 * SCALING)), c, font=code_font, fill=CODE_TEXT_COLOUR)
 
         i += 1
 
@@ -67,7 +82,3 @@ for page in range(paper_height):
 
 image_array[0].save("out.pdf", save_all=True, append_images=image_array[1:])
 print("PDF saved in cwd!")
-
-# for image in image_array:
-#     # Show the image
-#     image.show()
