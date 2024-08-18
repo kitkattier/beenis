@@ -2,8 +2,8 @@ The first cell after the program finishes running is a boolean indicating x is n
 0 means equal and anything else means not equal
 
 inputs
-++++ ++++> x
-++++ ++> a
++++++> x
++++> a
 ++ b
 
 subtract b from x

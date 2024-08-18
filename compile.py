@@ -25,6 +25,17 @@ MAPPINGS = {
     EOF: BLACK
 }
 
+NAMES = {
+    "+": "RED",
+    "-": "YELLOW",
+    "<": "BLUE",
+    ">": "CYAN",
+    "[": "GREEN",
+    "]": "MAGENTA",
+    NOP: "WHITE",
+    EOF: "BLACK"
+}
+
 SCALING = 2
 
 A4_WIDTH = 595 * 2
@@ -82,3 +93,4 @@ for page in range(pages):
 
 image_array[0].save("out.pdf", save_all=True, append_images=image_array[1:])
 print("PDF saved in cwd!")
+print(", ".join([NAMES[c] for c in code]))
