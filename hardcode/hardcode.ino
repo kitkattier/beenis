@@ -11,6 +11,7 @@ void setup() {
 }
 
 void loop() {
+  delay(1000);
   Color color = INSTRUCTIONS[i];
   if (color == BLACK) {
     if (aaaaaaaaa()) {
@@ -22,4 +23,5 @@ void loop() {
   execute_instruction(color);
   i++;
   step();
+  delay(10000);
 }
