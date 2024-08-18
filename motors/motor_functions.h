@@ -1,3 +1,5 @@
+
+
 int directionPinA = 12;
 int pwmPinA = 3;
 int brakePinA = 9;
@@ -6,30 +8,29 @@ int directionPinB = 13;
 int pwmPinB = 11;
 int brakePinB = 8;
 
-float SPEED = 1;
 
-void move_forward() {
+void move_forward(int left_speed, int right_speed) {
     // Motor A
     digitalWrite(directionPinA, HIGH);
     digitalWrite(brakePinA, LOW);
-    digitalWrite(pwmPinA, SPEED);
+    analogWrite(pwmPinA, left_speed);
 
     // Motor B
     digitalWrite(directionPinB, HIGH);
     digitalWrite(brakePinB, LOW);
-    digitalWrite(pwmPinB, SPEED);
+    analogWrite(pwmPinB, right_speed);
 }
 
-void move_backward() {
+void move_backward(int speed) {
     // Motor A
     digitalWrite(directionPinA, LOW);
     digitalWrite(brakePinA, LOW);
-    digitalWrite(pwmPinA, SPEED);
+    analogWrite(pwmPinA, speed);
 
     // Motor B
     digitalWrite(directionPinB, LOW);
     digitalWrite(brakePinB, LOW);
-    digitalWrite(pwmPinB, SPEED);
+    analogWrite(pwmPinB, speed);
 }
 
 void brake() {
@@ -77,3 +78,12 @@ void turn_left() {
     digitalWrite(brakePinB, LOW);
     digitalWrite(pwmPinB, 100);
 }
+
+void sensor_detection() {
+  
+
+  //calibrate();
+
+}
+
+
